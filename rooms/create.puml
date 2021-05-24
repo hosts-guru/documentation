@@ -21,7 +21,7 @@ skinparam DefaultTextAlignment center
 EKSCloud(roomMicrosservice, "Rooms Microsservice", "")
 User(hotelUser, "Hotel Administrator", "")
 DynamoDB(roomsDynamoDB, "Rooms Database", "")
-SimpleQueueService(roomsSQS, "Rooms Queue", "")
+SimpleQueueService(roomsSQS, "Rooms Queue Test it", "")
 SimpleStorageService(roomsS3, "Rooms Storage", "")
 Lambda(roomsLambdaIntegrity, "Rooms Integrity", "")
 KinesisDataStreams(roomsKinesisDataStreams, "Rooms Data Streams", "")
