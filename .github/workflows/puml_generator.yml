@@ -1,16 +1,26 @@
-name: Draw diagrams
+name: generate plantuml
 on: push
-
 jobs:
-  diagrams:
-    name: Draw diagrams
+  generate_plantuml:
     runs-on: ubuntu-latest
+    name: plantuml
     steps:
-      - name: Check out repository
+      - name: Install Dependencies
+        run: |
+          sudo apt-get install graphviz
+      - name: Checkout Repository
         uses: actions/checkout@v2
-      - name: Process diagrams
-        uses: Timmy/plantuml-action@v1
+      - name: Process Diagrams
+        run: java -jar plantuml.jar -v -tsvg -r -o "${{ github.workspace }}/output" "src/**.pu"
+      - name: Display Diagrams
+        run: pwd && ls output
+      - name: Commit Diagrams
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m ":rocket: adding generated diagrams" || exit 0
+      - name: Push Diagrams
+        uses: ad-m/github-push-action@master
         with:
-          args: '-tutxt diagrams/*.txt'
-      - name: Display diagrams
-        run: cat diagrams/*.utxt
+          github_token: ${{ secrets.GITHUB_TOKEN }}
