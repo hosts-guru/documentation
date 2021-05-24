@@ -47,7 +47,6 @@ jobs:
         uses:  stefanzweifel/git-auto-commit-action@v4.1.2
         with:
           commit_user_name: "hostsguru"
-#          commit_user_email: "hostsguru@gmail.org"
           commit_author: "Hosts Guru <"hostsguru@gmail.com">"
           commit_message: "Generate SVG and PNG images for PlantUML diagrams"
           branch: ${{ github.head_ref }}
