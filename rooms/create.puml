@@ -26,7 +26,7 @@ SimpleStorageService(roomsS3, "Rooms Storage", "")
 Lambda(roomsLambdaIntegrity, "Rooms Integrity", "")
 KinesisDataStreams(roomsKinesisDataStreams, "Rooms Data Streams", "")
 Lambda(roomsLambdaNotifier, "Rooms Notifier", "")
-Lambda(roomsLambdaIntegrator, "Rooms Integrator :rocket:", "")
+Lambda(roomsLambdaIntegrator, "Rooms Integrator", "")
 SimpleNotificationServiceHTTPNotification(roomsSNSHTTPNotifier, "Rooms HTTP Notifier", "")
 SimpleNotificationServiceEmailNotification(roomsSNSEmailNotifier, "Rooms Email Notifier", "")
 
