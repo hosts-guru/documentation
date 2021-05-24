@@ -44,5 +44,3 @@ jobs:
           args: -v -tpng ${{ steps.getfile.outputs.files }}
       - name: Push Local Changes
         uses:  stefanzweifel/git-auto-commit-action@v4.1.2
-        with:
-          branch: ${{ github.head_ref }}
