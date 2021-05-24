@@ -1,4 +1,4 @@
-@startuml Basic Usage - AWS IoT Rules Engine
+@startuml rooms_cloud_workflow
 skinparam DefaultTextAlignment center
 
 !define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v10.0/dist
