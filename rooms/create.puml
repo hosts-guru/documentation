@@ -1,0 +1,45 @@
+@startuml Basic Usage - AWS IoT Rules Engine
+skinparam DefaultTextAlignment center
+
+!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v10.0/dist
+!includeurl AWSPuml/AWSSimplified.puml
+!includeurl AWSPuml/General/User.puml
+!includeurl AWSPuml/Containers/EKSCloud.puml
+!includeurl AWSPuml/ApplicationIntegration/SimpleQueueService.puml
+!includeurl AWSPuml/ApplicationIntegration/SimpleNotificationServiceEmailNotification.puml
+!includeurl AWSPuml/ApplicationIntegration/SimpleNotificationServiceHTTPNotification.puml
+!includeurl AWSPuml/Database/DynamoDB.puml
+!includeurl AWSPuml/Storage/SimpleStorageService.puml
+!includeurl AWSPuml/Compute/Lambda.puml
+!includeurl AWSPuml/Analytics/KinesisDataStreams.puml
+
+
+'left to right direction
+
+'agent "Request Room Creation" as event #fff
+
+EKSCloud(roomMicrosservice, "Rooms Microsservice", "")
+User(hotelUser, "Hotel Administrator", "")
+DynamoDB(roomsDynamoDB, "Rooms Database", "")
+SimpleQueueService(roomsSQS, "Rooms Queue", "")
+SimpleStorageService(roomsS3, "Rooms Storage", "")
+Lambda(roomsLambdaIntegrity, "Rooms Integrity", "")
+KinesisDataStreams(roomsKinesisDataStreams, "Rooms Data Streams", "")
+Lambda(roomsLambdaNotifier, "Rooms Notifier", "")
+Lambda(roomsLambdaIntegrator, "Rooms Integrator", "")
+SimpleNotificationServiceHTTPNotification(roomsSNSHTTPNotifier, "Rooms HTTP Notifier", "")
+SimpleNotificationServiceEmailNotification(roomsSNSEmailNotifier, "Rooms Email Notifier", "")
+
+
+hotelUser-->roomMicrosservice
+roomMicrosservice-->roomsDynamoDB
+roomMicrosservice-->roomsSQS
+roomMicrosservice-->roomsS3
+roomsSQS-->roomsLambdaIntegrity
+roomsLambdaIntegrity-->roomsKinesisDataStreams
+roomsKinesisDataStreams-->roomsLambdaNotifier
+roomsKinesisDataStreams-->roomsLambdaIntegrator
+roomsLambdaNotifier-->roomsSNSHTTPNotifier
+roomsLambdaNotifier-->roomsSNSEmailNotifier
+
+@enduml
