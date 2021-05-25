@@ -16,10 +16,10 @@ skinparam {
 
 left to right direction
 
+Cognito(cognitoAuthorization, "Cognito Auth", "")
 EKSCloud(roomMicrosservice, "Rooms Microsservice", "")
 User(hotelUser, "Hotel Administrator", "")
 DynamoDB(roomsDynamoDB, "Rooms Database", "")
-Cognito(cognitoAuthorization, "Cognito Auth", "")
 
 
 hotelUser <-->roomMicrosservice: Send Payload to Get One Room or Many Rooms
