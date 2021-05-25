@@ -17,7 +17,7 @@ skinparam DefaultTextAlignment center
 !includeurl AWSPuml/SecurityIdentityCompliance/Cognito.puml
 
 
-'left to right direction
+left to right direction
 
 EKSCloud(roomMicrosservice, "Rooms Microsservice", "")
 User(hotelUser, "Hotel Administrator", "")
