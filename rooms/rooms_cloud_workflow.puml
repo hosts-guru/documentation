@@ -4,6 +4,7 @@ skinparam DefaultTextAlignment center
 !define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v10.0/dist
 !includeurl AWSPuml/AWSSimplified.puml
 !includeurl AWSPuml/General/User.puml
+!includeurl AWSPuml/General/Internet.puml
 !includeurl AWSPuml/Containers/EKSCloud.puml
 !includeurl AWSPuml/ApplicationIntegration/SimpleQueueService.puml
 !includeurl AWSPuml/ApplicationIntegration/SimpleNotificationServiceEmailNotification.puml
@@ -27,6 +28,7 @@ Lambda(roomsLambdaNotifier, "Rooms Notifier", "")
 Lambda(roomsLambdaIntegrator, "Rooms Integrator", "")
 SimpleNotificationServiceHTTPNotification(roomsSNSHTTPNotifier, "Rooms HTTP Notifier", "")
 SimpleNotificationServiceEmailNotification(roomsSNSEmailNotifier, "Rooms Email Notifier", "")
+Internet(roomsExternalIntegrations, "External Integrations", "")
 
 
 hotelUser-->roomMicrosservice
@@ -36,8 +38,9 @@ roomMicrosservice-->roomsS3
 roomsSQS-->roomsLambdaIntegrity
 roomsLambdaIntegrity-->roomsKinesisDataStreams
 roomsKinesisDataStreams-->roomsLambdaNotifier
-roomsKinesisDataStreams-->roomsLambdaIntegrator
 roomsLambdaNotifier-->roomsSNSHTTPNotifier
 roomsLambdaNotifier-->roomsSNSEmailNotifier
+roomsKinesisDataStreams-->roomsLambdaIntegrator
+roomsLambdaIntegrator-->roomsExternalIntegrations
 
 @enduml
