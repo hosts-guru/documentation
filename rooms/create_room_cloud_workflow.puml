@@ -1,10 +1,5 @@
 @startuml create_room_cloud_workflow
 footer  Hosts Guru\n  [[https://github.com/hosts-guru/documentation Hosts Guru Docs]]
-skinparam {
-    DefaultTextAlignment center
-    SequenceMessageAlign first
-    backgroundColor white
-}
 
 !define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v10.0/dist
 !includeurl AWSPuml/AWSSimplified.puml
@@ -19,6 +14,13 @@ skinparam {
 !includeurl AWSPuml/Compute/Lambda.puml
 !includeurl AWSPuml/Analytics/KinesisDataStreams.puml
 !includeurl AWSPuml/SecurityIdentityCompliance/Cognito.puml
+
+skinparam {
+    DefaultTextAlignment center
+    SequenceMessageAlign first
+    backgroundColor #EEEBDC
+    BorderColor AWS_BORDER_COLOR
+}
 
 
 left to right direction

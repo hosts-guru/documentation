@@ -11,10 +11,9 @@ footer  Hosts Guru\n  [[https://github.com/hosts-guru/documentation Hosts Guru D
 skinparam {
     DefaultTextAlignment center
     SequenceMessageAlign first
-    BackgroundColor AWS_BG_COLOR
+    backgroundColor #EEEBDC
     BorderColor AWS_BORDER_COLOR
 }
-
 UserParticipant(hotelUser, "Hotel Administrator", "")
 CognitoParticipant(cognitoAuth, "Cognito Auth", "")
 EKSCloudParticipant(roomMicrosservice, "Rooms Microsservice", "")
