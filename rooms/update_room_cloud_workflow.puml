@@ -1,7 +1,10 @@
 @startuml update_room_cloud_workflow
 footer  Hosts Guru\n  [[https://github.com/hosts-guru/documentation Hosts Guru Docs]]
-skinparam DefaultTextAlignment center
-skinparam SequenceMessageAlign first
+skinparam {
+    DefaultTextAlignment center
+    SequenceMessageAlign first
+    backgroundColor white
+}
 
 !define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v10.0/dist
 !includeurl AWSPuml/AWSSimplified.puml
@@ -20,11 +23,12 @@ skinparam SequenceMessageAlign first
 
 left to right direction
 
+Cognito(cognitoAuthorization, "Cognito Auth", "")
 EKSCloud(roomMicrosservice, "Rooms Microsservice", "")
 User(hotelUser, "Hotel Administrator", "")
-DynamoDB(roomsDynamoDB, "Rooms Database", "")
-SimpleQueueService(roomsSQS, "Rooms Queue", "")
 SimpleStorageService(roomsS3, "Rooms Storage", "")
+SimpleQueueService(roomsSQS, "Rooms Queue", "")
+DynamoDB(roomsDynamoDB, "Rooms Database", "")
 Lambda(roomsLambdaIntegrity, "Rooms Integrity", "")
 KinesisDataStreams(roomsKinesisDataStreams, "Rooms Data Streams", "")
 Lambda(roomsLambdaNotifier, "Rooms Notifier", "")
@@ -32,22 +36,21 @@ Lambda(roomsLambdaIntegrator, "Rooms Integrator", "")
 SimpleNotificationServiceHTTPNotification(roomsSNSHTTPNotifier, "Rooms HTTP Notifier", "")
 SimpleNotificationServiceEmailNotification(roomsSNSEmailNotifier, "Rooms Email Notifier", "")
 Internet(roomsExternalIntegrations, "External Integrations", "")
-Cognito(cognitoAuthorization, "Cognito Auth", "")
 
 
 hotelUser-->roomMicrosservice: Send Payload to Update a Room
 hotelUser<-->cognitoAuthorization: Request Access
-roomMicrosservice-->roomsDynamoDB: Save Room into "Rooms Database"
+roomMicrosservice-->roomsDynamoDB: Update Room into Rooms Database
 roomMicrosservice-->roomsSQS: Send Message to Verification
 roomMicrosservice-->roomsS3: Save Images into Storage
 roomsSQS-->roomsLambdaIntegrity: Read Queue Messages
-roomsS3<--roomsLambdaIntegrity: Verify Images at Storage
-roomsDynamoDB<--roomsLambdaIntegrity: Verify Idempotency of new Room Updated
+roomsS3<-->roomsLambdaIntegrity: Verify Images at Storage
+roomsDynamoDB<-->roomsLambdaIntegrity: Verify Idempotency of the Room Updated
 roomsLambdaIntegrity-->roomsKinesisDataStreams: Send to Event Stream
 roomsKinesisDataStreams-->roomsLambdaNotifier: Read From Stream
 roomsLambdaNotifier-->roomsSNSHTTPNotifier: Notify Client in App and Browser
 roomsLambdaNotifier-->roomsSNSEmailNotifier: Notify Client in Email
 roomsKinesisDataStreams-->roomsLambdaIntegrator: Read From Stream
-roomsLambdaIntegrator-->roomsExternalIntegrations: Update Room in External Integrations
+roomsLambdaIntegrator-->roomsExternalIntegrations: Update Room at External Integrations
 
 @enduml

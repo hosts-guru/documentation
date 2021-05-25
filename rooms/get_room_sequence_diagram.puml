@@ -1,0 +1,15 @@
+@startuml get_room_sequence_diagram
+footer  Hosts Guru\n  [[https://github.com/hosts-guru/documentation Hosts Guru Docs]]
+skinparam {
+    DefaultTextAlignment center
+    SequenceMessageAlign first
+    backgroundColor white
+}
+
+!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v10.0/dist
+!includeurl AWSPuml/AWSSimplified.puml
+!includeurl AWSPuml/General/User.puml
+!includeurl AWSPuml/Containers/EKSCloud.puml
+!includeurl AWSPuml/Database/DynamoDB.puml
+
+@enduml

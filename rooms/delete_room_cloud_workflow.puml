@@ -1,4 +1,4 @@
-@startuml create_room_cloud_workflow
+@startuml delete_room_cloud_workflow
 footer  Hosts Guru\n  [[https://github.com/hosts-guru/documentation Hosts Guru Docs]]
 skinparam {
     DefaultTextAlignment center
@@ -26,9 +26,9 @@ left to right direction
 Cognito(cognitoAuthorization, "Cognito Auth", "")
 EKSCloud(roomMicrosservice, "Rooms Microsservice", "")
 User(hotelUser, "Hotel Administrator", "")
-SimpleStorageService(roomsS3, "Rooms Storage", "")
-SimpleQueueService(roomsSQS, "Rooms Queue", "")
 DynamoDB(roomsDynamoDB, "Rooms Database", "")
+SimpleQueueService(roomsSQS, "Rooms Queue", "")
+SimpleStorageService(roomsS3, "Rooms Storage", "")
 Lambda(roomsLambdaIntegrity, "Rooms Integrity", "")
 KinesisDataStreams(roomsKinesisDataStreams, "Rooms Data Streams", "")
 Lambda(roomsLambdaNotifier, "Rooms Notifier", "")
@@ -38,19 +38,18 @@ SimpleNotificationServiceEmailNotification(roomsSNSEmailNotifier, "Rooms Email N
 Internet(roomsExternalIntegrations, "External Integrations", "")
 
 
-hotelUser-->roomMicrosservice: Send Payload to Create a Room
+hotelUser-->roomMicrosservice: Send Payload to Delete a Room
 hotelUser<-->cognitoAuthorization: Request Access
+roomMicrosservice-->roomsDynamoDB: Delete Room into Rooms Database
 roomMicrosservice-->roomsSQS: Send Message to Verification
-roomMicrosservice-->roomsS3: Save Images into Storage
-roomMicrosservice-->roomsDynamoDB: Save Room into Rooms Database
 roomsSQS-->roomsLambdaIntegrity: Read Queue Messages
-roomsS3<-->roomsLambdaIntegrity: Verify Images at Storage
-roomsDynamoDB<-->roomsLambdaIntegrity: Verify Idempotency of new Room Created
+roomsLambdaIntegrity-->roomsS3: Delete Images at Storage
+roomsDynamoDB<-->roomsLambdaIntegrity: Verify Idempotency of new Room Deleted
 roomsLambdaIntegrity-->roomsKinesisDataStreams: Send to Event Stream
 roomsKinesisDataStreams-->roomsLambdaNotifier: Read From Stream
 roomsLambdaNotifier-->roomsSNSHTTPNotifier: Notify Client in App and Browser
 roomsLambdaNotifier-->roomsSNSEmailNotifier: Notify Client in Email
 roomsKinesisDataStreams-->roomsLambdaIntegrator: Read From Stream
-roomsLambdaIntegrator-->roomsExternalIntegrations: Create Room in External Integrations
+roomsLambdaIntegrator-->roomsExternalIntegrations: Delete Room in External Integrations
 
 @enduml
