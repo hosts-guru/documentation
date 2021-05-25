@@ -1,0 +1,26 @@
+@startuml get_room_cloud_workflow
+footer  Hosts Guru\n  [[https://github.com/hosts-guru/documentation Hosts Guru Docs]]
+skinparam DefaultTextAlignment center
+skinparam SequenceMessageAlign first
+
+!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v10.0/dist
+!includeurl AWSPuml/AWSSimplified.puml
+!includeurl AWSPuml/General/User.puml
+!includeurl AWSPuml/Containers/EKSCloud.puml
+!includeurl AWSPuml/Database/DynamoDB.puml
+!includeurl AWSPuml/SecurityIdentityCompliance/Cognito.puml
+
+
+left to right direction
+
+EKSCloud(roomMicrosservice, "Rooms Microsservice", "")
+User(hotelUser, "Hotel Administrator", "")
+DynamoDB(roomsDynamoDB, "Rooms Database", "")
+Cognito(cognitoAuthorization, "Cognito Auth", "")
+
+
+hotelUser <-->roomMicrosservice: Send Payload to Get One Room or Many Rooms
+hotelUser<-->cognitoAuthorization: Request Access
+roomMicrosservice <-->roomsDynamoDB: Get Room into Rooms Database
+
+@enduml
