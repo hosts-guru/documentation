@@ -2,4 +2,4 @@
 
 ## Cloud Proposal Diagram
 
-![Cloud Proposal Diagram](./rooms_cloud_workflow.svg)
+![Cloud Proposal Diagram](./create_room_cloud_workflow.svg)
