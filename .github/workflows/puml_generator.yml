@@ -1,6 +1,8 @@
-name: generate plantuml
+name: Plant UML SVG Generator
 on:
-  pull_request:
+  push:
+    branches-ignore:
+      - master
     paths:
       - '**.puml'
 jobs:
@@ -21,12 +23,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add .
           git commit -m ":rocket: adding generated diagrams" || exit 0
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
       - name: Push Diagrams
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.extract_branch.outputs.branch }}
