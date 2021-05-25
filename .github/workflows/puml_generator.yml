@@ -1,6 +1,6 @@
 name: generate plantuml
 on:
-  push:
+  pull_request:
     paths:
       - '**.puml'
 jobs:
