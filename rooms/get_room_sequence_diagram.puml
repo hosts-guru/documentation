@@ -1,0 +1,32 @@
+@startuml get_room_sequence_diagram
+footer  Hosts Guru\n  [[https://github.com/hosts-guru/documentation Hosts Guru Docs]]
+
+!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v10.0/dist
+!includeurl AWSPuml/AWSCommon.puml
+!includeurl AWSPuml/General/all.puml
+!includeurl AWSPuml/Containers/all.puml
+!includeurl AWSPuml/Database/all.puml
+!includeurl AWSPuml/SecurityIdentityCompliance/all.puml
+
+skinparam {
+    DefaultTextAlignment center
+    SequenceMessageAlign first
+    BackgroundColor AWS_BG_COLOR
+    BorderColor AWS_BORDER_COLOR
+}
+
+UserParticipant(hotelUser, "Hotel Administrator", "")
+CognitoParticipant(cognitoAuth, "Cognito Auth", "")
+EKSCloudParticipant(roomMicrosservice, "Rooms Microsservice", "")
+DynamoDBParticipant(roomsDynamoDB, "Rooms Database", "")
+hotelUser<->cognitoAuth:Request Token
+hotelUser->roomMicrosservice:Request a Room\nGET /rooms/{roomID}
+activate roomMicrosservice
+roomMicrosservice<->roomsDynamoDB:Get User at Database
+alt if Room not found
+roomMicrosservice-x hotelUser:Returns Room not found\nHTTP Status 404
+end
+roomMicrosservice->hotelUser:Returns Room found at Database\nHTTP Status 200
+deactivate roomMicrosservice
+
+@enduml

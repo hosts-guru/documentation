@@ -1,7 +1,10 @@
-@startuml rooms_cloud_workflow
-title <size:20> Rooms Cloud Workflow</size>
+@startuml create_room_cloud_workflow
 footer  Hosts Guru\n  [[https://github.com/hosts-guru/documentation Hosts Guru Docs]]
-skinparam DefaultTextAlignment center
+skinparam {
+    DefaultTextAlignment center
+    SequenceMessageAlign first
+    backgroundColor white
+}
 
 !define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v10.0/dist
 !includeurl AWSPuml/AWSSimplified.puml
@@ -15,15 +18,17 @@ skinparam DefaultTextAlignment center
 !includeurl AWSPuml/Storage/SimpleStorageService.puml
 !includeurl AWSPuml/Compute/Lambda.puml
 !includeurl AWSPuml/Analytics/KinesisDataStreams.puml
+!includeurl AWSPuml/SecurityIdentityCompliance/Cognito.puml
 
 
-'left to right direction
+left to right direction
 
+Cognito(cognitoAuthorization, "Cognito Auth", "")
 EKSCloud(roomMicrosservice, "Rooms Microsservice", "")
 User(hotelUser, "Hotel Administrator", "")
-DynamoDB(roomsDynamoDB, "Rooms Database", "")
-SimpleQueueService(roomsSQS, "Rooms Queue", "")
 SimpleStorageService(roomsS3, "Rooms Storage", "")
+SimpleQueueService(roomsSQS, "Rooms Queue", "")
+DynamoDB(roomsDynamoDB, "Rooms Database", "")
 Lambda(roomsLambdaIntegrity, "Rooms Integrity", "")
 KinesisDataStreams(roomsKinesisDataStreams, "Rooms Data Streams", "")
 Lambda(roomsLambdaNotifier, "Rooms Notifier", "")
@@ -33,16 +38,19 @@ SimpleNotificationServiceEmailNotification(roomsSNSEmailNotifier, "Rooms Email N
 Internet(roomsExternalIntegrations, "External Integrations", "")
 
 
-hotelUser-->roomMicrosservice
-roomMicrosservice-->roomsDynamoDB
-roomMicrosservice-->roomsSQS
-roomMicrosservice-->roomsS3
-roomsSQS-->roomsLambdaIntegrity
-roomsLambdaIntegrity-->roomsKinesisDataStreams
-roomsKinesisDataStreams-->roomsLambdaNotifier
-roomsLambdaNotifier-->roomsSNSHTTPNotifier
-roomsLambdaNotifier-->roomsSNSEmailNotifier
-roomsKinesisDataStreams-->roomsLambdaIntegrator
-roomsLambdaIntegrator-->roomsExternalIntegrations
+hotelUser-->roomMicrosservice: Send Payload to Create a Room
+hotelUser<-->cognitoAuthorization: Request Access
+roomMicrosservice-->roomsSQS: Send Message to Verification
+roomMicrosservice-->roomsS3: Save Images into Storage
+roomMicrosservice-->roomsDynamoDB: Save Room into Rooms Database
+roomsSQS-->roomsLambdaIntegrity: Read Queue Messages
+roomsS3<-->roomsLambdaIntegrity: Verify Images at Storage
+roomsDynamoDB<-->roomsLambdaIntegrity: Verify Idempotency of new Room Created
+roomsLambdaIntegrity-->roomsKinesisDataStreams: Send to Event Stream
+roomsKinesisDataStreams-->roomsLambdaNotifier: Read From Stream
+roomsLambdaNotifier-->roomsSNSHTTPNotifier: Notify Client in App and Browser
+roomsLambdaNotifier-->roomsSNSEmailNotifier: Notify Client in Email
+roomsKinesisDataStreams-->roomsLambdaIntegrator: Read From Stream
+roomsLambdaIntegrator-->roomsExternalIntegrations: Create Room in External Integrations
 
 @enduml
