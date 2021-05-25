@@ -1,0 +1,76 @@
+@startuml create_room_sequence_diagram
+footer  Hosts Guru\n  [[https://github.com/hosts-guru/documentation Hosts Guru Docs]]
+
+!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v10.0/dist
+!includeurl AWSPuml/AWSCommon.puml
+!includeurl AWSPuml/General/all.puml
+!includeurl AWSPuml/Containers/all.puml
+!includeurl AWSPuml/ApplicationIntegration/all.puml
+!includeurl AWSPuml/Database/all.puml
+!includeurl AWSPuml/Storage/all.puml
+!includeurl AWSPuml/Compute/all.puml
+!includeurl AWSPuml/Analytics/all.puml
+!includeurl AWSPuml/SecurityIdentityCompliance/all.puml
+
+skinparam {
+    DefaultTextAlignment center
+    SequenceMessageAlign first
+    BackgroundColor AWS_BG_COLOR
+    BorderColor AWS_BORDER_COLOR
+}
+
+UserParticipant(hotelUser, "Hotel Administrator", "")
+CognitoParticipant(cognitoAuth, "Cognito Auth", "")
+EKSCloudParticipant(roomMicrosservice, "Rooms Microsservice", "")
+SimpleStorageServiceParticipant(roomsS3, "Rooms Storage", "")
+SimpleQueueServiceParticipant(roomsSQS, "Rooms Queue", "")
+DynamoDBParticipant(roomsDynamoDB, "Rooms Database", "")
+LambdaParticipant(roomsLambdaIntegrity, "Rooms Integrity", "")
+KinesisDataStreamsParticipant(roomsKinesisDataStreams, "Rooms Data Streams", "")
+LambdaParticipant(roomsLambdaNotifier, "Rooms Notifier", "")
+LambdaParticipant(roomsLambdaIntegrator, "Rooms Integrator", "")
+SimpleNotificationServiceHTTPNotificationParticipant(roomsSNSHTTPNotifier, "Rooms HTTP Notifier", "")
+SimpleNotificationServiceEmailNotificationParticipant(roomsSNSEmailNotifier, "Rooms Email Notifier", "")
+InternetParticipant(roomsExternalIntegrations, "External Integrations", "")
+
+
+hotelUser<->cognitoAuth:Request Token
+hotelUser->roomMicrosservice:Request a Room\nPOST /rooms
+activate roomMicrosservice
+roomMicrosservice->roomsS3: Save Images into S3 Storage
+alt if Error on Save images
+roomMicrosservice-x hotelUser:Returns Room Internal Server Error\nHTTP Status 500
+end
+roomMicrosservice->roomsSQS: Send Room model for verification
+alt if Error on Send message
+roomMicrosservice-x hotelUser:Returns Room Internal Server Error\nHTTP Status 500
+end
+roomMicrosservice->roomsDynamoDB: Save User at Database
+alt if Error on Save Room
+roomMicrosservice-x hotelUser:Returns Room Internal Server Error\nHTTP Status 500
+end
+roomMicrosservice->hotelUser:Returns Room Created\nHTTP Status 201
+deactivate roomMicrosservice
+...
+roomsSQS->roomsLambdaIntegrity
+activate roomsLambdaIntegrity
+roomsLambdaIntegrity->roomsDynamoDB:Retrieve Room Created at Database
+alt if Room was not created
+roomsLambdaIntegrity->roomsS3:Remove Images from Storage
+roomsLambdaIntegrity-x roomsSQS:Remove message from Queue
+end
+roomsLambdaIntegrity->roomsKinesisDataStreams:Send room to DataStream
+roomsLambdaIntegrity-x roomsSQS:Remove message from Queue
+deactivate roomsLambdaIntegrity
+...
+roomsKinesisDataStreams->roomsLambdaNotifier:Consume DataStream
+activate roomsLambdaNotifier
+roomsLambdaNotifier->roomsSNSEmailNotifier:Notify Users by e-mail
+roomsLambdaNotifier->roomsSNSHTTPNotifier: Notify Users at browser and app
+deactivate
+roomsKinesisDataStreams->roomsLambdaIntegrator:Consume DataStream
+activate roomsLambdaIntegrator
+roomsLambdaIntegrator->roomsExternalIntegrations:Create Rooms at External Integrations
+deactivate
+
+@enduml

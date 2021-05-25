@@ -24,7 +24,7 @@ hotelUser->roomMicrosservice:Request a Room\nGET /rooms/{roomId}
 activate roomMicrosservice
 roomMicrosservice<->roomsDynamoDB:Get User at Database
 alt if Room not found
-roomMicrosservice--x hotelUser:Returns Room not found\nHTTP Status 404
+roomMicrosservice-x hotelUser:Returns Room not found\nHTTP Status 404
 end
 roomMicrosservice->hotelUser:Returns Room found at Database\nHTTP Status 200
 deactivate roomMicrosservice
