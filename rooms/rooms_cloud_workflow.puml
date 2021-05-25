@@ -16,8 +16,6 @@ skinparam DefaultTextAlignment center
 
 'left to right direction
 
-'agent "Request Room Creation" as event #fff
-
 EKSCloud(roomMicrosservice, "Rooms Microsservice", "")
 User(hotelUser, "Hotel Administrator", "")
 DynamoDB(roomsDynamoDB, "Rooms Database", "")
