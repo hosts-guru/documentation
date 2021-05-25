@@ -1,4 +1,6 @@
 @startuml rooms_cloud_workflow
+title <size:20> Rooms Cloud Workflow</size>
+footer  Hosts Guru\n  [[https://github.com/hosts-guru/documentation Hosts Guru Docs]]
 skinparam DefaultTextAlignment center
 
 !define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v10.0/dist
