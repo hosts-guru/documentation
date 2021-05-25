@@ -2,7 +2,7 @@ name: Plant UML SVG Generator
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - '**.puml'
 jobs:
