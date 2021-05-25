@@ -54,7 +54,7 @@ deactivate roomMicrosservice
 ...
 roomsSQS->roomsLambdaIntegrity
 activate roomsLambdaIntegrity
-roomsLambdaIntegrity->roomsDynamoDB:Retrieve Room Created at Database
+roomsLambdaIntegrity<->roomsDynamoDB:Retrieve Room Created at Database
 alt if Room was not created
 roomsLambdaIntegrity->roomsS3:Remove Images from Storage
 roomsLambdaIntegrity-x roomsSQS:Remove message from Queue
@@ -72,5 +72,4 @@ roomsKinesisDataStreams->roomsLambdaIntegrator:Consume DataStream
 activate roomsLambdaIntegrator
 roomsLambdaIntegrator->roomsExternalIntegrations:Create Rooms at External Integrations
 deactivate
-
 @enduml
