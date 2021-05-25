@@ -20,7 +20,7 @@ CognitoParticipant(cognitoAuth, "Cognito Auth", "")
 EKSCloudParticipant(roomMicrosservice, "Rooms Microsservice", "")
 DynamoDBParticipant(roomsDynamoDB, "Rooms Database", "")
 hotelUser<->cognitoAuth:Request Token
-hotelUser->roomMicrosservice:Request a Room\nGET /rooms/{roomId}
+hotelUser->roomMicrosservice:Request a Room\nGET /rooms/{roomID}
 activate roomMicrosservice
 roomMicrosservice<->roomsDynamoDB:Get User at Database
 alt if Room not found
