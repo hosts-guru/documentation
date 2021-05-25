@@ -14,6 +14,7 @@ skinparam DefaultTextAlignment center
 !includeurl AWSPuml/Storage/SimpleStorageService.puml
 !includeurl AWSPuml/Compute/Lambda.puml
 !includeurl AWSPuml/Analytics/KinesisDataStreams.puml
+!includeurl AWSPuml/SecurityIdentityCompliance/Cognito.puml
 
 
 'left to right direction
@@ -30,9 +31,11 @@ Lambda(roomsLambdaIntegrator, "Rooms Integrator", "")
 SimpleNotificationServiceHTTPNotification(roomsSNSHTTPNotifier, "Rooms HTTP Notifier", "")
 SimpleNotificationServiceEmailNotification(roomsSNSEmailNotifier, "Rooms Email Notifier", "")
 Internet(roomsExternalIntegrations, "External Integrations", "")
+Cognito(cognitoAuthorization, "Cognito Auth", "")
 
 
 hotelUser-->roomMicrosservice
+hotelUser<-->cognitoAuthorization
 roomMicrosservice-->roomsDynamoDB
 roomMicrosservice-->roomsSQS
 roomMicrosservice-->roomsS3
