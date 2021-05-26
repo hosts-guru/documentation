@@ -1,0 +1,112 @@
+openapi: 3.0.3
+info:
+  title: "Rooms Microservice"
+  description: "Rooms Microservice"
+  version: 1.0.0
+servers:
+  - url: 'https://localhost/v1'
+paths:
+  /rooms:
+    get:
+      summary: "GET rooms from service"
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: perPage
+          schema:
+            type: integer
+          required: false
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+  /rooms/{id}:
+    get:
+      summary: "GET rooms from service"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            maxLength: 36
+            minLength: 36
+      responses:
+        '200':
+          description: "A JSON array of user names"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+components:
+  schemas:
+    Pagination:
+      type: object
+      properties:
+        current_page:
+          type: integer
+        total_pages:
+          type: integer
+        per_page:
+          type: integer
+        total_entries:
+          type: integer
+    Links:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+    Room:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+        vacancies:
+          type: integer
+        rules:
+          $ref: '#/components/schemas/Rules'
+        facilities:
+          type: array
+          items:
+            type: string
+        album:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+    Rules:
+      type: object
+      additionalProperties:
+        type: boolean
+    Image:
+      type: object
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+    SearchResponse:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Room'
+        links:
+          $ref: '#/components/schemas/Links'
