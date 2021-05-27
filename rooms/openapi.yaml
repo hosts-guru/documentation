@@ -8,7 +8,7 @@ servers:
 paths:
   /rooms:
     post:
-      description: "POST Room "
+      description: "POST Room 2"
       summary: "Creating a room"
       requestBody:
         required: true
