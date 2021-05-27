@@ -18,7 +18,7 @@ Base URLs:
 
 *Creating a room*
 
-POST Room 2
+POST Room 3
 
 > Body parameter
 
