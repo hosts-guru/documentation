@@ -18,7 +18,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Process OpenAPI
         run: |
-          widdershins ./**/openapi.yaml -o ./**/openapi.md --omitHeader  --code=true
+          widdershins ./rooms/openapi.yaml -o ./rooms/openapi.md --omitHeader  --code=true
+          widdershins ./test/openapi.yaml -o ./test/openapi.md --omitHeader  --code=true
       - name: Commit Diagrams
         run: |
           git config --local user.email "action@github.com"
