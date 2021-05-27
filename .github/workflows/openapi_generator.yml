@@ -14,8 +14,8 @@ jobs:
           sudo npm install -g widdershins
       - name: Checkout Repository
         uses: actions/checkout@v2
-      - name: Process Diagrams
-        run: widdershins ./rooms/openapi.yaml -o ./rooms/openapi.md --omitHeader  --code=false
+      - name: Process OpenAPI
+        run: widdershins ./rooms/openapi.yaml -o ./rooms/openapi.md --omitHeader  --code=true
       - name: Commit Diagrams
         run: |
           git config --local user.email "action@github.com"
