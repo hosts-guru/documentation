@@ -16,7 +16,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
       - name: Process Diagrams
-        run: plantuml -v -tsvg -r -o "./" "${{ github.workspace }}/**.puml"
+        run: plantuml -v -tsvg -r -o "./" "./**.puml"
       - name: Commit Diagrams
         run: |
           git config --local user.email "action@github.com"

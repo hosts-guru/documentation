@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - "*/openapi.yml"
+      - "**/openapi.yml"
 jobs:
   generate_plantuml:
     runs-on: ubuntu-latest
@@ -17,7 +17,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
       - name: Process OpenAPI
-        run: widdershins ./rooms/openapi.yaml -o ./rooms/openapi.md --omitHeader  --code=true
+        run: |
+          widdershins ./rooms/openapi.yaml -o ./rooms/openapi.md --omitHeader  --code=true
       - name: Commit Diagrams
         run: |
           git config --local user.email "action@github.com"
