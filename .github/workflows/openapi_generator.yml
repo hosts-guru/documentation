@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "openapi.yml"
 jobs:
   generate_plantuml:
     runs-on: ubuntu-latest

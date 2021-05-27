@@ -8,6 +8,7 @@ servers:
 paths:
   /rooms:
     post:
+      description: "POST Room"
       summary: "Creating a room"
       requestBody:
         required: false
@@ -17,8 +18,9 @@ paths:
               $ref: '#/components/schemas/Room'
       responses:
         '201':
-          description: ""
+          description: "CREATED"
     get:
+      description: "GET Rooms"
       summary: "GET rooms from service"
       parameters:
         - in: query
@@ -40,6 +42,7 @@ paths:
                 $ref: '#/components/schemas/SearchResponse'
   /rooms/{id}:
     get:
+      description: "GET Room"
       summary: "GET rooms from service"
       parameters:
         - in: path
