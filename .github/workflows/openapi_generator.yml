@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
       - name: Process Diagrams
-        run: widdershins ./rooms/openapi.yaml -o openapi.md
+        run: widdershins ./rooms/openapi.yaml -o ./rooms/openapi.md --omitHeader  --code=false
       - name: Commit Diagrams
         run: |
           git config --local user.email "action@github.com"
