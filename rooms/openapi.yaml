@@ -7,6 +7,17 @@ servers:
   - url: 'https://localhost/v1'
 paths:
   /rooms:
+    post:
+      summary: "Creating a room"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Room'
+      responses:
+        '201':
+          description: ""
     get:
       summary: "GET rooms from service"
       parameters:
