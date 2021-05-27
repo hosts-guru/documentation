@@ -18,6 +18,8 @@ Base URLs:
 
 *Creating a room*
 
+POST Room 2
+
 > Body parameter
 
 ```json
@@ -47,13 +49,13 @@ Base URLs:
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|body|body|[Room](#schemaroom)|false|none|
+|body|body|[Room](#schemaroom)|true|none|
 
 <h3 id="post__rooms-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|none|None|
+|201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|CREATED|None|
 
 <aside class="success">
 This operation does not require authentication
@@ -64,6 +66,8 @@ This operation does not require authentication
 `GET /rooms`
 
 *GET rooms from service*
+
+GET Rooms
 
 <h3 id="get__rooms-parameters">Parameters</h3>
 
@@ -128,6 +132,8 @@ This operation does not require authentication
 `GET /rooms/{id}`
 
 *GET rooms from service*
+
+GET Room
 
 <h3 id="get__rooms_{id}-parameters">Parameters</h3>
 
