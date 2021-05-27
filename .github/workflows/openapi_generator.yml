@@ -1,0 +1,30 @@
+name: Plant UML SVG Generator
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/openapi.yml'
+jobs:
+  generate_plantuml:
+    runs-on: ubuntu-latest
+    name: plantuml
+    steps:
+      - name: Install Dependencies
+        run: |
+          sudo apt-get install -y nodejs
+          sudo npm install -g widdershins
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Process Diagrams
+        run: widdershins ./rooms/openapi.yaml -o openapi.md
+      - name: Commit Diagrams
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m ":rocket: adding generated openapi markdown docs" || exit 0
+      - name: Push Diagrams
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
