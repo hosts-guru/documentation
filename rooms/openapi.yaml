@@ -11,7 +11,7 @@ paths:
       description: "POST Room"
       summary: "Creating a room"
       requestBody:
-        required: false
+        required: true
         content:
           application/json:
             schema:
